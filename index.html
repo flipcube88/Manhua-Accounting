@@ -31,7 +31,7 @@
         @media (min-width: 640px) { .phone-container { height: 812px; margin: 20px auto; border-radius: 20px; } }
         .page { position: absolute; top: 44px; bottom: 84px; width: 100%; overflow-y: auto; display: none; padding: 0 20px; z-index: 10; }
         .page.active { display: block; animation: strike 0.2s ease-out; }
-        @keyframes strike { 0% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes strike { 0% { transform: scale(1.05); } 100% { transform: scale(1); } }
         .status-bar { position: absolute; top: 0; width: 100%; height: 44px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 900; z-index: 50; background: #000; color: #fff; }
         .nav-bar { position: absolute; bottom: 0; width: 100%; height: 84px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 4px solid var(--blood-red); padding-bottom: env(safe-area-inset-bottom, 20px); z-index: 50; }
         .ai-btn { width: 70px; height: 70px; background: var(--blood-red); border: 4px solid #fff; transform: rotate(-5deg); display: flex; align-items: center; justify-content: center; color: white; margin-top: -50px; box-shadow: 5px 5px 0px #000; cursor: pointer; }
@@ -43,18 +43,19 @@
         
         /* 初始化遮罩 */
         #init-overlay { position: fixed; inset: 0; background: #1a1a1a; z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- 初始化系統 (解決 Secret Leak) -->
+    <!-- 初始化系統 (解決心法不對問題) -->
     <div id="init-overlay" class="hidden">
         <div class="manhua-card w-full max-w-sm">
             <h2 class="brush-font text-3xl mb-4 text-center">開山立派</h2>
             <p class="text-xs font-bold text-slate-500 mb-6 text-center italic">「英雄，請輸入你的雲端心法 (Firebase Config)」</p>
-            <textarea id="fb-config-input" rows="8" placeholder='{"apiKey": "...", "projectId": "...", ...}' class="w-full border-4 border-black p-3 text-[10px] font-mono mb-4 outline-none focus:bg-yellow-50" spellcheck="false"></textarea>
+            <textarea id="fb-config-input" rows="8" placeholder='直接貼上 Firebase Console 的程式碼片段...' class="w-full border-4 border-black p-3 text-[10px] font-mono mb-4 outline-none focus:bg-yellow-50" spellcheck="false"></textarea>
             <button id="save-fb-btn" class="w-full bg-red-600 text-white font-black py-3 border-b-4 border-r-4 border-black active:border-0 uppercase tracking-widest">注入神功</button>
-            <p class="text-[9px] text-slate-400 mt-4 leading-tight">貼上 Firebase Console 提供的 Config 對象。資料將僅儲存於本機 LocalStorage，絕不上傳 GitHub。</p>
+            <p class="text-[9px] text-slate-400 mt-4 leading-tight">貼上 Firebase Console 提供的 SDK 設定。我會自動幫你清理多餘的程式碼！</p>
         </div>
     </div>
 
@@ -114,7 +115,7 @@
                         <button id="save-key-btn" class="bg-black text-white px-4 py-2 text-xs font-black border-b-2 border-r-2 border-red-600">修煉</button>
                     </div>
                 </div>
-                <div class="manhua-card mt-4 bg-yellow-50 border-dashed border-2">
+                <div class="manhua-card mt-4 bg-yellow-50 border-dashed border-2 text-center">
                     <button id="reset-system-btn" class="text-[10px] font-black text-red-600 uppercase">重置雲端心法 (Reset Firebase)</button>
                 </div>
             </div>
@@ -132,8 +133,8 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const STORAGE_KEY_FB = 'FB_CONFIG_JSON';
-        const STORAGE_KEY_GEMINI = 'GEMINI_API_KEY';
+        const STORAGE_KEY_FB = 'FB_CONFIG_JSON_V2';
+        const STORAGE_KEY_GEMINI = 'GEMINI_API_KEY_V2';
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'fin-track-manhua-safe';
 
         const initOverlay = document.getElementById('init-overlay');
@@ -154,23 +155,22 @@
                         document.getElementById('user-id-suffix').innerText = user.uid.slice(-4).toUpperCase();
                         startDataSync(user.uid);
                     } else {
-                        signInAnonymously(auth);
+                        signInAnonymously(auth).catch(e => console.error("匿名登入失敗", e));
                     }
                 });
             } catch (err) {
-                console.error("Firebase Init Error", err);
+                console.error("Firebase Init Failed", err);
                 localStorage.removeItem(STORAGE_KEY_FB);
-                alert("心法有誤，請重新輸入！");
+                alert("心法有誤！請檢查 Config 內容。");
                 location.reload();
             }
         };
 
-        // 安全邏輯：優先從本地讀取，代碼內不含任何密鑰
+        // 偵測是否已初始化
         const savedConfig = localStorage.getItem(STORAGE_KEY_FB);
         if (savedConfig) {
             startApp(JSON.parse(savedConfig));
         } else {
-            // 如果環境變數中有 config (預覽環境) 則自動啟動，否則要求輸入
             if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                 startApp(JSON.parse(__firebase_config));
             } else {
@@ -178,21 +178,39 @@
             }
         }
 
+        // --- 強化的解析邏輯 ---
         saveFbBtn.onclick = () => {
-            const raw = fbInput.value.trim();
+            let raw = fbInput.value.trim();
+            if (!raw) return;
+
             try {
-                let config;
-                if (raw.includes('{')) {
-                    // 清理一些常見的複製錯誤
-                    const cleanJson = raw.replace(/const firebaseConfig = |;/g, '').trim();
-                    config = JSON.parse(cleanJson);
-                }
-                if (config && config.apiKey) {
+                // 1. 移除 script 標籤 (如果使用者連標籤也貼進來)
+                raw = raw.replace(/<script.*?>|<\/script>/gi, '');
+                
+                // 2. 移除變數聲明 (const firebaseConfig =, export const =, let =, var =)
+                raw = raw.replace(/(const|let|var|export)\s+\w+\s*=\s*/g, '').trim();
+                
+                // 3. 移除結尾的分號
+                if (raw.endsWith(';')) raw = raw.slice(0, -1);
+
+                // 4. 處理非標準 JSON (將沒有引號的 Key 補上引號)
+                // 這個 regex 會尋找像 apiKey: "..." 並轉成 "apiKey": "..."
+                let jsonFormatted = raw
+                    .replace(/([{,])\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":') 
+                    .replace(/'/g, '"') // 將單引號換成雙引號
+                    .replace(/,\s*}/g, '}'); // 移除尾端多餘的逗號
+
+                const config = JSON.parse(jsonFormatted);
+                
+                if (config.apiKey && config.projectId) {
                     localStorage.setItem(STORAGE_KEY_FB, JSON.stringify(config));
                     location.reload();
-                } else { throw new Error(); }
+                } else {
+                    throw new Error("缺失關鍵欄位");
+                }
             } catch (e) {
-                alert("格式不正確！請貼上完整且正確的 Firebase Config JSON 對象。");
+                alert("心法格式不對！請確保貼上的是完整的 Firebase Config 物件。");
+                console.error("Parse Error:", e);
             }
         };
 
@@ -203,9 +221,14 @@
             }
         };
 
-        // --- PWA & UI ---
-        const manifest = { name: "絕世帳簿", short_name: "絕世帳簿", start_url: ".", display: "standalone", theme_color: "#cc0000", icons: [{src: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png", sizes: "512x512", type: "image/png"}] };
-        document.getElementById('manifest-link').setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type: 'application/json'})));
+        // PWA Setup
+        const setupPWA = () => {
+            try {
+                const manifest = { name: "絕世帳簿", short_name: "絕世帳簿", start_url: ".", display: "standalone", theme_color: "#cc0000", icons: [{ src: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png", sizes: "512x512", type: "image/png" }] };
+                document.getElementById('manifest-link').setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type: 'application/json'})));
+            } catch (err) { console.warn("PWA Manifest failed."); }
+        };
+        setupPWA();
 
         function triggerFX(text) {
             const fx = document.getElementById('fx-text');
@@ -246,7 +269,7 @@
             document.getElementById('monthly-expense').innerText = `-$${exp.toLocaleString()}`;
         }
 
-        // --- AI ---
+        // AI Logic
         const getGeminiKey = () => localStorage.getItem(STORAGE_KEY_GEMINI) || "";
         document.getElementById('api-key-input').value = getGeminiKey();
         document.getElementById('save-key-btn').onclick = () => {
@@ -257,36 +280,42 @@
         async function callGemini(prompt) {
             const key = getGeminiKey();
             if (!key) throw new Error("MISSING_KEY");
-            const systemPrompt = `你是一位港漫風格的大師，將輸入轉為 JSON：{ "title": "品項", "amount": 數字, "category": "分類", "comment": "霸氣吐槽" }。分類：餐飲、交通、娛樂、收入、購物、其他。回傳純 JSON。`;
-            const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { responseMimeType: "application/json" } };
+            const systemPrompt = `你是一位港漫風格的大師，將輸入轉為 JSON：{ "title": "品項", "amount": 數字, "category": "分類", "comment": "霸氣吐槽" }。分類：餐飲、交通、娛樂、收入、購物、其他。請確保回傳為純 JSON。`;
+            const payload = { 
+                contents: [{ parts: [{ text: prompt }] }], 
+                systemInstruction: { parts: [{ text: systemPrompt }] }, 
+                generationConfig: { responseMimeType: "application/json" } 
+            };
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`;
             const response = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
             const result = await response.json();
-            if (result.error) throw new Error(result.error.message);
             return JSON.parse(result.candidates[0].content.parts[0].text);
         }
 
         const chatForm = document.getElementById('chat-form');
         chatForm.onsubmit = async (e) => {
             e.preventDefault();
-            const val = document.getElementById('chat-input').value.trim();
-            if (!val || !auth.currentUser) return;
+            const input = document.getElementById('chat-input');
+            const val = input.value.trim();
+            if (!val || !auth?.currentUser) return;
+            
             const msgBox = document.getElementById('chat-messages');
             const uMsg = document.createElement('div'); uMsg.className = "flex justify-end";
             uMsg.innerHTML = `<div class="manhua-card bg-black text-white border-white shadow-none text-xs font-black">${val}</div>`;
             msgBox.appendChild(uMsg);
-            document.getElementById('chat-input').value = '';
+            input.value = '';
             document.getElementById('btn-icon').className = "fas fa-sync-alt spinner";
+
             try {
                 const parsed = await callGemini(val);
                 await addDoc(collection(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'transactions'), { ...parsed, timestamp: serverTimestamp() });
                 triggerFX(parsed.amount < 0 ? '散！' : '吸！');
-                const aiMsg = document.createElement('div'); aiMsg.className = "flex justify-start";
+                const aiMsg = document.createElement('div'); aiMsg.className = "flex justify-start animate-fadeIn";
                 aiMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black">【大師】：${parsed.comment}</div>`;
                 msgBox.appendChild(aiMsg);
             } catch (err) {
-                const eMsg = document.createElement('div'); eMsg.className = "flex justify-start";
-                const txt = err.message === "MISSING_KEY" ? "未輸入 API Key！" : "解析失敗！";
+                const eMsg = document.createElement('div'); eMsg.className = "flex justify-start animate-fadeIn";
+                const txt = err.message === "MISSING_KEY" ? "尚未輸入 API Key！" : "解析失敗，請確認 Key 有效。";
                 eMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black border-red-600 text-red-600">${txt}</div>`;
                 msgBox.appendChild(eMsg);
             } finally {
@@ -295,6 +324,7 @@
             }
         };
 
+        // Navigation
         document.querySelectorAll('.nav-item').forEach(i => i.onclick = () => {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -302,6 +332,7 @@
             i.classList.add('active');
         });
 
+        // Clock
         setInterval(() => {
             const h = new Date().getHours();
             const shifts = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
