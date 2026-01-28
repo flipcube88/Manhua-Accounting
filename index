@@ -8,262 +8,118 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>絕世帳簿 - 港漫 AI 記帳</title>
     
-    <!-- PWA Manifest 動態注入 -->
     <link id="manifest-link" rel="manifest">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&family=Inter:wght@900&display=swap');
         
-        :root {
-            --ink-black: #000000;
-            --blood-red: #cc0000;
-            --gold: #f59e0b;
-        }
-
+        :root { --ink-black: #000000; --blood-red: #cc0000; --gold: #f59e0b; }
         body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #1a1a1a;
+            font-family: 'Inter', sans-serif; background-color: #1a1a1a;
             background-image: radial-gradient(#333 1px, transparent 1px);
-            background-size: 20px 20px;
-            overscroll-behavior-y: contain;
+            background-size: 20px 20px; overscroll-behavior-y: contain;
             -webkit-tap-highlight-color: transparent;
         }
-
         .brush-font { font-family: 'Ma Shan Zheng', cursive; }
         .comic-font { font-family: 'ZCOOL KuaiLe', sans-serif; }
-
         .phone-container {
-            width: 100%;
-            max-width: 375px;
-            height: 100vh;
-            max-height: 812px;
-            background: #fff;
-            border: 6px solid var(--ink-black);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(255,0,0,0.4);
-            margin: 0 auto;
+            width: 100%; max-width: 375px; height: 100vh; max-height: 812px;
+            background: #fff; border: 6px solid var(--ink-black); position: relative;
+            overflow: hidden; box-shadow: 0 0 40px rgba(255,0,0,0.4); margin: 0 auto;
         }
-
-        @media (min-width: 640px) {
-            .phone-container { height: 812px; margin: 20px auto; border-radius: 20px; }
-        }
-
-        .comic-bg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, #eee 25%, transparent 25%) -50px 0,
-                        linear-gradient(-45deg, #eee 25%, transparent 25%) -50px 0,
-                        linear-gradient(45deg, transparent 75%, #eee 75%),
-                        linear-gradient(-45deg, transparent 75%, #eee 75%);
-            background-size: 100px 100px;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-
-        .page {
-            position: absolute;
-            top: 44px;
-            bottom: 84px;
-            width: 100%;
-            overflow-y: auto;
-            display: none;
-            padding: 0 20px;
-            z-index: 10;
-        }
-
+        @media (min-width: 640px) { .phone-container { height: 812px; margin: 20px auto; border-radius: 20px; } }
+        .page { position: absolute; top: 44px; bottom: 84px; width: 100%; overflow-y: auto; display: none; padding: 0 20px; z-index: 10; }
         .page.active { display: block; animation: strike 0.2s ease-out; }
-
-        @keyframes strike {
-            0% { transform: scale(1.1); filter: contrast(150%); }
-            100% { transform: scale(1); filter: contrast(100%); }
-        }
-
-        .status-bar { 
-            position: absolute; top: 0; width: 100%; height: 44px; 
-            padding: 0 24px; display: flex; justify-content: space-between; 
-            align-items: center; font-size: 14px; font-weight: 900; z-index: 50;
-            background: #000; color: #fff;
-        }
-
-        .nav-bar { 
-            position: absolute; bottom: 0; width: 100%; height: 84px; 
-            background: #000; display: flex; justify-content: space-around; 
-            align-items: center; border-top: 4px solid var(--blood-red); 
-            padding-bottom: env(safe-area-inset-bottom, 20px); z-index: 50;
-        }
-
-        .ai-btn { 
-            width: 70px; height: 70px; 
-            background: var(--blood-red); 
-            border: 4px solid #fff;
-            transform: rotate(-5deg);
-            display: flex; align-items: center; 
-            justify-content: center; color: white; margin-top: -50px; 
-            box-shadow: 5px 5px 0px #000;
-            cursor: pointer;
-        }
-
-        .nav-item { cursor: pointer; display: flex; flex-direction: column; align-items: center; color: #666; font-weight: 900; }
-        .nav-item.active { color: var(--blood-red); }
-
-        .manhua-card { 
-            border: 4px solid var(--ink-black);
-            background: #fff; 
-            position: relative;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 6px 6px 0px var(--ink-black);
-        }
-
-        .kungfu-banner {
-            background: var(--ink-black);
-            color: var(--gold);
-            padding: 20px;
-            clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%);
-            margin-bottom: 25px;
-        }
-
-        .on-omatopoeia {
-            position: absolute;
-            font-size: 40px;
-            font-weight: 900;
-            color: var(--blood-red);
-            text-shadow: 3px 3px 0 #000;
-            pointer-events: none;
-            z-index: 100;
-            transform: rotate(-15deg);
-            display: none;
-        }
-
+        @keyframes strike { 0% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .status-bar { position: absolute; top: 0; width: 100%; height: 44px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 900; z-index: 50; background: #000; color: #fff; }
+        .nav-bar { position: absolute; bottom: 0; width: 100%; height: 84px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 4px solid var(--blood-red); padding-bottom: env(safe-area-inset-bottom, 20px); z-index: 50; }
+        .ai-btn { width: 70px; height: 70px; background: var(--blood-red); border: 4px solid #fff; transform: rotate(-5deg); display: flex; align-items: center; justify-content: center; color: white; margin-top: -50px; box-shadow: 5px 5px 0px #000; cursor: pointer; }
+        .manhua-card { border: 4px solid var(--ink-black); background: #fff; position: relative; padding: 15px; margin-bottom: 20px; box-shadow: 6px 6px 0px var(--ink-black); }
+        .kungfu-banner { background: var(--ink-black); color: var(--gold); padding: 20px; clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%); margin-bottom: 25px; }
+        .on-omatopoeia { position: absolute; font-size: 40px; font-weight: 900; color: var(--blood-red); text-shadow: 3px 3px 0 #000; pointer-events: none; z-index: 100; transform: rotate(-15deg); display: none; }
         .spinner { animation: spin 0.5s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* 初始化遮罩 */
+        #init-overlay { position: fixed; inset: 0; background: #1a1a1a; z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; }
     </style>
 </head>
 <body>
 
+    <!-- 初始化系統 (解決 Secret Leak) -->
+    <div id="init-overlay" class="hidden">
+        <div class="manhua-card w-full max-w-sm">
+            <h2 class="brush-font text-3xl mb-4 text-center">開山立派</h2>
+            <p class="text-xs font-bold text-slate-500 mb-6 text-center italic">「英雄，請輸入你的雲端心法 (Firebase Config)」</p>
+            <textarea id="fb-config-input" rows="8" placeholder='{"apiKey": "...", "projectId": "...", ...}' class="w-full border-4 border-black p-3 text-[10px] font-mono mb-4 outline-none focus:bg-yellow-50" spellcheck="false"></textarea>
+            <button id="save-fb-btn" class="w-full bg-red-600 text-white font-black py-3 border-b-4 border-r-4 border-black active:border-0 uppercase tracking-widest">注入神功</button>
+            <p class="text-[9px] text-slate-400 mt-4 leading-tight">貼上 Firebase Console 提供的 Config 對象。資料將僅儲存於本機 LocalStorage，絕不上傳 GitHub。</p>
+        </div>
+    </div>
+
     <div class="phone-container" id="app-container">
-        <div class="comic-bg"></div>
         <div id="fx-text" class="on-omatopoeia brush-font">轟！</div>
 
-        <!-- Status Bar -->
         <div class="status-bar">
             <span id="clock" class="comic-font">辰時</span>
-            <div class="flex gap-2">
-                <i class="fas fa-dragon"></i>
-                <i class="fas fa-battery-full"></i>
-            </div>
+            <div class="flex gap-2"><i class="fas fa-dragon"></i><i class="fas fa-battery-full"></i></div>
         </div>
 
-        <!-- Home Page (主城) -->
+        <!-- 主城 -->
         <div id="page-home" class="page active">
             <div class="py-4">
                 <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <p class="text-[10px] font-black uppercase text-slate-400">HERO ID #<span id="user-id-suffix">...</span></p>
-                        <h2 class="text-3xl font-black text-black brush-font" id="user-display">強者之路</h2>
-                    </div>
-                    <div class="w-14 h-14 border-4 border-black bg-yellow-400 flex items-center justify-center shadow-[4px_4px_0px_#000]">
-                        <i class="fas fa-user-ninja text-2xl"></i>
-                    </div>
+                    <div><p class="text-[10px] font-black uppercase text-slate-400">UID #<span id="user-id-suffix">...</span></p><h2 class="text-3xl font-black brush-font" id="user-display">強者之路</h2></div>
+                    <div class="w-14 h-14 border-4 border-black bg-yellow-400 flex items-center justify-center shadow-[4px_4px_0px_#000]"><i class="fas fa-user-ninja text-2xl"></i></div>
                 </div>
-
                 <div class="kungfu-banner">
-                    <p class="text-[10px] font-black italic tracking-widest opacity-80 mb-1">戰鬥力 (功力)</p>
+                    <p class="text-[10px] font-black italic tracking-widest opacity-80 mb-1">目前功力</p>
                     <h3 class="text-4xl font-black brush-font" id="total-balance">$0</h3>
                     <div class="grid grid-cols-2 gap-2 mt-4">
-                        <div class="border-l-2 border-gold pl-2">
-                            <p class="text-[8px] font-black text-white/60">吸星 (入)</p>
-                            <p class="text-sm font-black text-white" id="monthly-income">+$0</p>
-                        </div>
-                        <div class="border-l-2 border-red-500 pl-2">
-                            <p class="text-[8px] font-black text-white/60">散功 (出)</p>
-                            <p class="text-sm font-black text-white" id="monthly-expense">-$0</p>
-                        </div>
+                        <div class="border-l-2 border-gold pl-2"><p class="text-[8px] font-black text-white/60">吸星 (入)</p><p class="text-sm font-black text-white" id="monthly-income">+$0</p></div>
+                        <div class="border-l-2 border-red-500 pl-2"><p class="text-[8px] font-black text-white/60">散功 (出)</p><p class="text-sm font-black text-white" id="monthly-expense">-$0</p></div>
                     </div>
                 </div>
-
                 <h4 class="text-xl font-black mb-4 brush-font border-b-4 border-black inline-block">錢財決鬥史</h4>
-                <div class="space-y-4 pb-20" id="transaction-list">
-                    <div class="text-center py-10 opacity-30">
-                        <i class="fas fa-scroll text-5xl mb-4"></i>
-                        <p class="brush-font text-lg">尚未有英雄紀錄</p>
-                    </div>
-                </div>
+                <div class="space-y-4 pb-20" id="transaction-list"></div>
             </div>
         </div>
 
-        <!-- AI Chat Page (天機算) -->
+        <!-- 天機算 -->
         <div id="page-ai" class="page" style="padding: 0; background: #fff;">
             <div class="flex flex-col h-full">
                 <div class="bg-black p-4 flex items-center gap-4 border-b-4 border-red-600">
-                    <div class="w-12 h-12 bg-red-600 border-2 border-white flex items-center justify-center text-white text-2xl">
-                        <i class="fas fa-yin-yang"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-white brush-font text-xl">天機算大師</h3>
-                        <p class="text-[10px] text-gold font-black uppercase tracking-widest">AI Fortune Teller</p>
-                    </div>
+                    <div class="w-12 h-12 bg-red-600 border-2 border-white flex items-center justify-center text-white text-2xl"><i class="fas fa-yin-yang"></i></div>
+                    <div><h3 class="text-white brush-font text-xl">天機算大師</h3><p class="text-[10px] text-gold font-black uppercase tracking-widest">AI Fortune Teller</p></div>
                 </div>
-
-                <div id="chat-messages" class="flex-1 p-6 space-y-6 overflow-y-auto">
-                    <div class="flex justify-start">
-                        <div class="manhua-card max-w-[85%] !mb-0 text-sm font-black">
-                            【大師】：小子，報上你的開銷。讓老夫看看你今天又是如何敗家的？
-                        </div>
-                    </div>
-                </div>
-
+                <div id="chat-messages" class="flex-1 p-6 space-y-6 overflow-y-auto"></div>
                 <div class="p-4 bg-white border-t-4 border-black">
                     <form id="chat-form" class="flex gap-2">
-                        <input type="text" id="chat-input" placeholder="例：吃了碗叉燒飯 60 元" class="flex-1 border-4 border-black px-4 py-3 font-black text-sm outline-none">
-                        <button type="submit" id="send-btn" class="w-14 bg-black text-white border-b-4 border-r-4 border-red-600 flex items-center justify-center">
-                            <i class="fas fa-fist-raised text-xl" id="btn-icon"></i>
-                        </button>
+                        <input type="text" id="chat-input" placeholder="例：中午吃了碗拉麵 100 元" class="flex-1 border-4 border-black px-4 py-3 font-black text-sm outline-none">
+                        <button type="submit" id="send-btn" class="w-14 bg-black text-white border-b-4 border-r-4 border-red-600 flex items-center justify-center"><i class="fas fa-fist-raised text-xl" id="btn-icon"></i></button>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Settings Page (江湖) -->
+        <!-- 江湖 -->
         <div id="page-settings" class="page">
             <div class="py-4">
                 <h2 class="text-3xl font-black mb-6 brush-font">門派設定</h2>
-                
-                <!-- API KEY SETTING -->
                 <div class="manhua-card bg-slate-50">
                     <h5 class="text-xs font-black uppercase mb-2 text-red-600 italic">內功心法 (Gemini API Key)</h5>
                     <div class="flex gap-2">
                         <input type="password" id="api-key-input" placeholder="貼上你的 API Key" class="flex-1 border-2 border-black p-2 text-xs font-bold outline-none">
-                        <button id="save-key-btn" class="bg-black text-white px-4 py-2 text-xs font-black border-b-2 border-r-2 border-red-600 active:border-0">修煉</button>
+                        <button id="save-key-btn" class="bg-black text-white px-4 py-2 text-xs font-black border-b-2 border-r-2 border-red-600">修煉</button>
                     </div>
-                    <p class="text-[9px] text-slate-400 mt-2">※ 你的 Key 僅會儲存在手機本地，不會上傳至他人伺服器。</p>
                 </div>
-
-                <div class="space-y-4 mt-6">
-                    <div id="pwa-install-btn" class="manhua-card flex items-center justify-between p-4 cursor-pointer bg-yellow-400 hidden">
-                        <div class="flex items-center gap-4">
-                            <i class="fas fa-download text-xl"></i>
-                            <span class="font-black text-sm">將「絕世帳簿」安裝至手機</span>
-                        </div>
-                    </div>
-                    <div class="manhua-card flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50">
-                        <div class="flex items-center gap-4">
-                            <i class="fas fa-scroll text-xl text-red-600"></i>
-                            <span class="font-black text-sm">傳音入密 (通知)</span>
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-400"></i>
-                    </div>
-                    <div class="text-center py-4">
-                        <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">Version 1.1.0-MANHUA-PWA</p>
-                    </div>
+                <div class="manhua-card mt-4 bg-yellow-50 border-dashed border-2">
+                    <button id="reset-system-btn" class="text-[10px] font-black text-red-600 uppercase">重置雲端心法 (Reset Firebase)</button>
                 </div>
             </div>
         </div>
 
-        <!-- Nav Bar -->
         <div class="nav-bar">
             <div class="nav-item active" data-page="home"><i class="fas fa-fort-awesome text-xl"></i><span class="text-[9px] mt-1">主城</span></div>
             <div class="nav-item" data-page="ai"><i class="fas fa-hand-fist text-xl"></i><span class="text-[9px] mt-1">天機算</span></div>
@@ -273,124 +129,99 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        /* ===========================================================
-         武林秘籍：FIREBASE 配置區
-         ===========================================================
-         如果你要部署到自己的 Vercel/Netlify，請將下方內容替換。
-         取得方法：Firebase Console -> 項目設定 -> 你的應用程式 -> SDK 設定
-         ===========================================================
-        */
-        const mySecretFirebaseConfig = {
-            apiKey: "AIzaSyD0vTp277dpLVN36kFL7nt_pkjCMkehlS4",
-  authDomain: "manhua-accounting.firebaseapp.com",
-  projectId: "manhua-accounting",
-  storageBucket: "manhua-accounting.firebasestorage.app",
-  messagingSenderId: "177698626189",
-  appId: "1:177698626189:web:cca7c755a75408274b60c4
-        };
-        // =========================================================
+        const STORAGE_KEY_FB = 'FB_CONFIG_JSON';
+        const STORAGE_KEY_GEMINI = 'GEMINI_API_KEY';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'fin-track-manhua-safe';
 
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : mySecretFirebaseConfig;
+        const initOverlay = document.getElementById('init-overlay');
+        const fbInput = document.getElementById('fb-config-input');
+        const saveFbBtn = document.getElementById('save-fb-btn');
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'fin-track-manhua';
+        let db, auth;
 
-        // PWA Setup
-        const setupPWA = () => {
+        const startApp = (config) => {
+            initOverlay.classList.add('hidden');
             try {
-                const manifest = {
-                    name: "絕世帳簿 - 港漫 AI 記帳",
-                    short_name: "絕世帳簿",
-                    start_url: ".",
-                    display: "standalone",
-                    background_color: "#1a1a1a",
-                    theme_color: "#cc0000",
-                    icons: [{
-                        src: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png",
-                        sizes: "512x512",
-                        type: "image/png"
-                    }]
-                };
-                const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-                document.getElementById('manifest-link').setAttribute('href', URL.createObjectURL(manifestBlob));
+                const firebaseApp = initializeApp(config);
+                auth = getAuth(firebaseApp);
+                db = getFirestore(firebaseApp);
 
-                if ('serviceWorker' in navigator) {
-                    const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));`;
-                    const swUrl = URL.createObjectURL(new Blob([swCode], {type: 'application/javascript'}));
-                    navigator.serviceWorker.register(swUrl).catch(err => console.warn('SW Register Error:', err));
-                }
-            } catch (err) { console.error('PWA Setup Error:', err); }
-
-            let deferredPrompt;
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                document.getElementById('pwa-install-btn')?.classList.remove('hidden');
-            });
-            document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt = null;
-                }
-            });
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        document.getElementById('user-id-suffix').innerText = user.uid.slice(-4).toUpperCase();
+                        startDataSync(user.uid);
+                    } else {
+                        signInAnonymously(auth);
+                    }
+                });
+            } catch (err) {
+                console.error("Firebase Init Error", err);
+                localStorage.removeItem(STORAGE_KEY_FB);
+                alert("心法有誤，請重新輸入！");
+                location.reload();
+            }
         };
-        setupPWA();
 
-        // Init Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        // 安全邏輯：優先從本地讀取，代碼內不含任何密鑰
+        const savedConfig = localStorage.getItem(STORAGE_KEY_FB);
+        if (savedConfig) {
+            startApp(JSON.parse(savedConfig));
+        } else {
+            // 如果環境變數中有 config (預覽環境) 則自動啟動，否則要求輸入
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                startApp(JSON.parse(__firebase_config));
+            } else {
+                initOverlay.classList.remove('hidden');
+            }
+        }
 
-        let currentUser = null;
-
-        // API KEY Persistence
-        const getStoredApiKey = () => localStorage.getItem('GEMINI_API_KEY') || "";
-        document.getElementById('api-key-input').value = getStoredApiKey();
-
-        document.getElementById('save-key-btn').onclick = () => {
-            const val = document.getElementById('api-key-input').value.trim();
-            localStorage.setItem('GEMINI_API_KEY', val);
-            triggerFX("成！");
+        saveFbBtn.onclick = () => {
+            const raw = fbInput.value.trim();
+            try {
+                let config;
+                if (raw.includes('{')) {
+                    // 清理一些常見的複製錯誤
+                    const cleanJson = raw.replace(/const firebaseConfig = |;/g, '').trim();
+                    config = JSON.parse(cleanJson);
+                }
+                if (config && config.apiKey) {
+                    localStorage.setItem(STORAGE_KEY_FB, JSON.stringify(config));
+                    location.reload();
+                } else { throw new Error(); }
+            } catch (e) {
+                alert("格式不正確！請貼上完整且正確的 Firebase Config JSON 對象。");
+            }
         };
+
+        document.getElementById('reset-system-btn').onclick = () => {
+            if(confirm("確定要重置所有雲端設定？")) {
+                localStorage.removeItem(STORAGE_KEY_FB);
+                location.reload();
+            }
+        };
+
+        // --- PWA & UI ---
+        const manifest = { name: "絕世帳簿", short_name: "絕世帳簿", start_url: ".", display: "standalone", theme_color: "#cc0000", icons: [{src: "https://cdn-icons-png.flaticon.com/512/3062/3062634.png", sizes: "512x512", type: "image/png"}] };
+        document.getElementById('manifest-link').setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type: 'application/json'})));
 
         function triggerFX(text) {
             const fx = document.getElementById('fx-text');
-            fx.innerText = text;
-            fx.style.display = 'block';
+            fx.innerText = text; fx.style.display = 'block';
             fx.style.left = '40%'; fx.style.top = '40%';
             setTimeout(() => fx.style.display = 'none', 800);
         }
 
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else { await signInAnonymously(auth); }
-            } catch (err) { console.error("Auth Failed:", err); }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                document.getElementById('user-id-suffix').innerText = user.uid.slice(-4).toUpperCase();
-                startDataSync(user.uid);
-            }
-        });
-        initAuth();
-
         function startDataSync(userId) {
-            if (!userId) return;
             const transRef = collection(db, 'artifacts', appId, 'users', userId, 'transactions');
             onSnapshot(transRef, (snapshot) => {
                 const data = [];
                 snapshot.forEach(doc => data.push({ id: doc.id, ...doc.data() }));
                 data.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
                 updateUI(data);
-            }, (err) => console.error("Firestore Error:", err));
+            });
         }
 
         function updateUI(transactions) {
@@ -403,20 +234,11 @@
                     const amt = parseFloat(t.amount);
                     if (amt > 0) inc += amt; else exp += Math.abs(amt);
                     const icons = { '餐飲': 'drumstick-bite', '交通': 'horse', '娛樂': 'theater-masks', '收入': 'dragon', '購物': 'gem' };
-                    return `
-                        <div class="manhua-card flex items-center gap-4 py-3 animate-fadeIn">
-                            <div class="w-10 h-10 bg-black text-white flex items-center justify-center border-2 border-red-600 shadow-[2px_2px_0px_#cc0000]">
-                                <i class="fas fa-${icons[t.category] || 'bolt'}"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="font-black text-sm uppercase">${t.title}</p>
-                                <p class="text-[8px] font-bold text-slate-400 uppercase">${t.category}</p>
-                            </div>
-                            <span class="font-black brush-font ${amt > 0 ? 'text-green-600' : 'text-red-600'}">
-                                ${amt > 0 ? '+' : ''}${amt.toLocaleString()}
-                            </span>
-                        </div>
-                    `;
+                    return `<div class="manhua-card flex items-center gap-4 py-3 animate-fadeIn">
+                        <div class="w-10 h-10 bg-black text-white flex items-center justify-center border-2 border-red-600 shadow-[2px_2px_0px_#cc0000]"><i class="fas fa-${icons[t.category] || 'bolt'}"></i></div>
+                        <div class="flex-1"><p class="font-black text-sm uppercase">${t.title}</p><p class="text-[8px] font-bold text-slate-400 uppercase">${t.category}</p></div>
+                        <span class="font-black brush-font ${amt > 0 ? 'text-green-600' : 'text-red-600'}">${amt > 0 ? '+' : ''}${amt}</span>
+                    </div>`;
                 }).join('');
             }
             document.getElementById('total-balance').innerText = `$${(10000 + inc - exp).toLocaleString()}`;
@@ -424,18 +246,20 @@
             document.getElementById('monthly-expense').innerText = `-$${exp.toLocaleString()}`;
         }
 
-        async function callGemini(prompt) {
-            const key = getStoredApiKey();
-            if (!key) throw new Error("MISSING_KEY");
+        // --- AI ---
+        const getGeminiKey = () => localStorage.getItem(STORAGE_KEY_GEMINI) || "";
+        document.getElementById('api-key-input').value = getGeminiKey();
+        document.getElementById('save-key-btn').onclick = () => {
+            localStorage.setItem(STORAGE_KEY_GEMINI, document.getElementById('api-key-input').value.trim());
+            triggerFX("成！");
+        };
 
-            const systemPrompt = `你是一位港漫風格的大師，將輸入轉為 JSON：{ "title": "品項", "amount": 數字, "category": "分類", "comment": "霸氣吐槽" }。分類：餐飲、交通、娛樂、收入、購物、其他。請確保回傳為純 JSON。`;
-            const payload = { 
-                contents: [{ parts: [{ text: prompt }] }], 
-                systemInstruction: { parts: [{ text: systemPrompt }] }, 
-                generationConfig: { responseMimeType: "application/json" } 
-            };
+        async function callGemini(prompt) {
+            const key = getGeminiKey();
+            if (!key) throw new Error("MISSING_KEY");
+            const systemPrompt = `你是一位港漫風格的大師，將輸入轉為 JSON：{ "title": "品項", "amount": 數字, "category": "分類", "comment": "霸氣吐槽" }。分類：餐飲、交通、娛樂、收入、購物、其他。回傳純 JSON。`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { responseMimeType: "application/json" } };
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`;
-            
             const response = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
             const result = await response.json();
             if (result.error) throw new Error(result.error.message);
@@ -443,48 +267,37 @@
         }
 
         const chatForm = document.getElementById('chat-form');
-        const chatInput = document.getElementById('chat-input');
-        const chatMessages = document.getElementById('chat-messages');
-
         chatForm.onsubmit = async (e) => {
             e.preventDefault();
-            const val = chatInput.value.trim();
-            if (!val || !currentUser) return;
-            
-            const userMsg = document.createElement('div');
-            userMsg.className = "flex justify-end animate-fadeIn";
-            userMsg.innerHTML = `<div class="manhua-card bg-black text-white border-white shadow-none text-xs font-black">${val}</div>`;
-            chatMessages.appendChild(userMsg);
-            chatInput.value = '';
+            const val = document.getElementById('chat-input').value.trim();
+            if (!val || !auth.currentUser) return;
+            const msgBox = document.getElementById('chat-messages');
+            const uMsg = document.createElement('div'); uMsg.className = "flex justify-end";
+            uMsg.innerHTML = `<div class="manhua-card bg-black text-white border-white shadow-none text-xs font-black">${val}</div>`;
+            msgBox.appendChild(uMsg);
+            document.getElementById('chat-input').value = '';
             document.getElementById('btn-icon').className = "fas fa-sync-alt spinner";
-
             try {
                 const parsed = await callGemini(val);
-                const transRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions');
-                await addDoc(transRef, { ...parsed, timestamp: serverTimestamp() });
+                await addDoc(collection(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'transactions'), { ...parsed, timestamp: serverTimestamp() });
                 triggerFX(parsed.amount < 0 ? '散！' : '吸！');
-                
-                const aiMsg = document.createElement('div');
-                aiMsg.className = "flex justify-start animate-fadeIn";
+                const aiMsg = document.createElement('div'); aiMsg.className = "flex justify-start";
                 aiMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black">【大師】：${parsed.comment}</div>`;
-                chatMessages.appendChild(aiMsg);
+                msgBox.appendChild(aiMsg);
             } catch (err) {
-                const errMsg = document.createElement('div');
-                errMsg.className = "flex justify-start animate-fadeIn";
-                const txt = err.message === "MISSING_KEY" ? "尚未修煉心法（API Key）！請前往江湖頁面設定。" : "心法走火入魔或網路不通！";
-                errMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black border-red-600 text-red-600">${txt}</div>`;
-                chatMessages.appendChild(errMsg);
+                const eMsg = document.createElement('div'); eMsg.className = "flex justify-start";
+                const txt = err.message === "MISSING_KEY" ? "未輸入 API Key！" : "解析失敗！";
+                eMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black border-red-600 text-red-600">${txt}</div>`;
+                msgBox.appendChild(eMsg);
             } finally {
                 document.getElementById('btn-icon').className = "fas fa-fist-raised";
-                chatMessages.scrollTo(0, chatMessages.scrollHeight);
+                msgBox.scrollTo(0, msgBox.scrollHeight);
             }
         };
 
-        const navItems = document.querySelectorAll('.nav-item');
-        const pages = document.querySelectorAll('.page');
-        navItems.forEach(i => i.onclick = () => {
-            pages.forEach(p => p.classList.remove('active'));
-            navItems.forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.onclick = () => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('page-' + i.dataset.page).classList.add('active');
             i.classList.add('active');
         });
