@@ -25,13 +25,9 @@
             background-color: #1a1a1a;
             background-image: radial-gradient(#333 1px, transparent 1px);
             background-size: 20px 20px;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100dvh; 
-            overflow-x: hidden;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100dvh; overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -39,160 +35,85 @@
         .comic-font { font-family: 'ZCOOL KuaiLe', sans-serif; }
 
         .phone-container {
-            width: 100%;
-            max-width: 500px;
-            height: 100dvh;
-            background: #fff;
-            border: 6px solid var(--ink-black);
-            position: relative;
-            overflow: hidden;
+            width: 100%; max-width: 500px; height: 100dvh;
+            background: #fff; border: 6px solid var(--ink-black);
+            position: relative; overflow: hidden;
             box-shadow: 0 0 50px rgba(255,0,0,0.3);
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
 
         @media (min-width: 640px) {
-            .phone-container {
-                max-width: 375px;
-                height: 812px;
-                border-radius: 32px;
-                margin: 20px;
-            }
+            .phone-container { max-width: 375px; height: 812px; border-radius: 32px; margin: 20px; }
         }
 
         .comic-bg {
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(45deg, #eee 25%, transparent 25%) -50px 0,
                         linear-gradient(-45deg, #eee 25%, transparent 25%) -50px 0,
                         linear-gradient(45deg, transparent 75%, #eee 75%),
                         linear-gradient(-45deg, transparent 75%, #eee 75%);
-            background-size: 100px 100px;
-            opacity: 0.1;
-            pointer-events: none;
+            background-size: 100px 100px; opacity: 0.1; pointer-events: none;
         }
 
-        .page-wrapper {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
-
+        .page-wrapper { flex: 1; position: relative; overflow: hidden; }
         .page {
-            position: absolute;
-            inset: 0;
-            overflow-y: auto;
-            display: none;
-            padding: 20px;
-            padding-bottom: calc(100px + env(safe-area-inset-bottom)); 
-            z-index: 10;
+            position: absolute; inset: 0; overflow-y: auto; display: none; padding: 20px;
+            padding-bottom: calc(100px + env(safe-area-inset-bottom)); z-index: 10;
         }
-
         .page.active { display: block; animation: strike 0.2s ease-out; }
-
-        @keyframes strike {
-            0% { transform: scale(1.03) rotate(0.5deg); filter: brightness(1.2); }
-            100% { transform: scale(1) rotate(0); filter: brightness(1); }
-        }
 
         .status-bar { 
             height: calc(44px + env(safe-area-inset-top)); 
             padding: env(safe-area-inset-top) 24px 0 24px;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-size: 14px; 
-            font-weight: 900; 
-            background: #000; 
-            color: #fff;
-            z-index: 60;
+            display: flex; justify-content: space-between; align-items: center; 
+            font-size: 14px; font-weight: 900; background: #000; color: #fff; z-index: 60;
         }
 
         .nav-bar { 
             height: calc(84px + env(safe-area-inset-bottom));
-            background: #000;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 4px solid var(--blood-red);
-            padding-bottom: env(safe-area-inset-bottom);
-            z-index: 60;
+            background: #000; display: flex; justify-content: space-around;
+            align-items: center; border-top: 4px solid var(--blood-red);
+            padding-bottom: env(safe-area-inset-bottom); z-index: 60;
         }
 
         .ai-btn { 
-            width: 70px; height: 70px; 
-            background: var(--blood-red); 
-            border: 4px solid #fff;
-            transform: rotate(-5deg);
-            display: flex; align-items: center; 
+            width: 70px; height: 70px; background: var(--blood-red); border: 4px solid #fff;
+            transform: rotate(-5deg); display: flex; align-items: center; 
             justify-content: center; color: white; margin-top: -65px; 
-            box-shadow: 5px 5px 0px #000;
-            cursor: pointer;
-            z-index: 70;
-            transition: transform 0.1s;
+            box-shadow: 5px 5px 0px #000; cursor: pointer; z-index: 70;
         }
-        .ai-btn:active { transform: scale(0.9) rotate(0deg); }
 
-        .nav-item { 
-            cursor: pointer; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            color: #666; 
-            font-weight: 900;
-            transition: color 0.2s, transform 0.2s;
-            flex: 1;
-        }
+        .nav-item { cursor: pointer; display: flex; flex-direction: column; align-items: center; color: #666; font-weight: 900; flex: 1; }
         .nav-item.active { color: #fff; }
-        .nav-item i { font-size: 22px; margin-bottom: 2px; }
 
-        .manhua-card { 
-            border: 4px solid var(--ink-black);
-            background: #fff; 
-            position: relative;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 6px 6px 0px var(--ink-black);
-        }
+        .manhua-card { border: 4px solid var(--ink-black); background: #fff; position: relative; padding: 15px; margin-bottom: 20px; box-shadow: 6px 6px 0px var(--ink-black); }
+        .kungfu-banner { background: var(--ink-black); color: var(--gold); padding: 20px; clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%); margin-bottom: 25px; }
+        
+        .transaction-card { transition: all 0.2s; cursor: pointer; }
+        .delete-btn { color: #999; padding: 10px; }
 
-        .kungfu-banner {
-            background: var(--ink-black);
-            color: var(--gold);
-            padding: 20px;
-            clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
-            margin-bottom: 25px;
-        }
-
-        .on-omatopoeia {
-            position: absolute;
-            font-size: 40px;
-            font-weight: 900;
-            color: var(--blood-red);
-            text-shadow: 3px 3px 0 #000;
-            pointer-events: none;
-            z-index: 100;
-            transform: rotate(-15deg);
-            display: none;
-        }
-
+        .on-omatopoeia { position: absolute; font-size: 40px; font-weight: 900; color: var(--blood-red); text-shadow: 3px 3px 0 #000; pointer-events: none; z-index: 100; transform: rotate(-15deg); display: none; }
         .spinner { animation: spin 0.5s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
-        #init-overlay { position: fixed; inset: 0; background: #1a1a1a; z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .hidden { display: none !important; }
         #toast { position: fixed; top: calc(60px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 10px 20px; border: 2px solid var(--blood-red); font-weight: 900; z-index: 1000; display: none; text-align: center; width: 80%; }
+        
+        /* 圖片預覽樣式 */
+        #img-preview-container { display: none; margin-bottom: 10px; border: 2px dashed #000; padding: 5px; position: relative; }
+        #img-preview { max-height: 100px; width: auto; border: 2px solid #000; }
+        .clear-img { position: absolute; top: -10px; right: -10px; background: #000; color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff; }
     </style>
 </head>
 <body>
 
     <div id="toast" class="brush-font text-sm">系統提示</div>
 
-    <div id="init-overlay" class="hidden">
+    <div id="init-overlay" class="hidden fixed inset-0 bg-[#1a1a1a] z-[999] flex items-center justify-center p-5">
         <div class="manhua-card w-full max-w-sm">
             <h2 class="brush-font text-3xl mb-4 text-center">開山立派</h2>
             <p class="text-xs font-bold text-slate-500 mb-6 text-center italic">「英雄，請輸入你的雲端心法 (Firebase Config)」</p>
-            <textarea id="fb-config-input" rows="8" placeholder='貼上 Firebase Console 提供的程式碼...' class="w-full border-4 border-black p-3 text-[10px] font-mono mb-4 outline-none focus:bg-yellow-50" spellcheck="false"></textarea>
-            <button id="save-fb-btn" class="w-full bg-red-600 text-white font-black py-3 border-b-4 border-r-4 border-black active:border-0 uppercase tracking-widest">注入神功</button>
+            <textarea id="fb-config-input" rows="8" placeholder='貼上 Firebase Console 提供的 SDK 設定...' class="w-full border-4 border-black p-3 text-[10px] font-mono mb-4 outline-none focus:bg-yellow-50"></textarea>
+            <button id="save-fb-btn" class="w-full bg-red-600 text-white font-black py-3 border-b-4 border-r-4 border-black uppercase tracking-widest">注入神功</button>
         </div>
     </div>
 
@@ -206,20 +127,24 @@
         </div>
 
         <div class="page-wrapper">
+            <!-- 主城 -->
             <div id="page-home" class="page active">
                 <div class="py-4">
                     <div class="flex justify-between items-center mb-6">
                         <div class="overflow-hidden">
-                            <p class="text-[10px] font-black uppercase text-slate-400 truncate">UID #<span id="user-id-suffix">...</span></p>
+                            <p class="text-[10px] font-black uppercase text-slate-400">UID #<span id="user-id-suffix">...</span></p>
                             <h2 class="text-3xl font-black brush-font truncate" id="user-display">強者之路</h2>
                         </div>
-                        <div class="flex-shrink-0 w-14 h-14 border-4 border-black bg-yellow-400 flex items-center justify-center shadow-[4px_4px_0px_#000]">
+                        <div class="w-14 h-14 border-4 border-black bg-yellow-400 flex items-center justify-center shadow-[4px_4px_0px_#000]">
                             <i class="fas fa-user-ninja text-2xl"></i>
                         </div>
                     </div>
                     
-                    <div class="kungfu-banner">
-                        <p class="text-[10px] font-black italic tracking-widest opacity-80 mb-1">戰鬥力 (功力)</p>
+                    <div class="kungfu-banner" id="combat-power-banner">
+                        <p class="text-[10px] font-black italic tracking-widest opacity-80 mb-1 flex items-center gap-2">
+                            <span id="power-label-display">戰鬥力 (功力)</span>
+                            <i class="fas fa-pen text-[8px] text-gold"></i>
+                        </p>
                         <h3 class="text-4xl font-black brush-font truncate" id="total-balance">$0</h3>
                         <div class="grid grid-cols-2 gap-2 mt-4">
                             <div class="border-l-2 border-gold pl-2">
@@ -238,22 +163,47 @@
                 </div>
             </div>
 
+            <!-- 戰報 -->
+            <div id="page-stats" class="page">
+                <div class="py-4">
+                    <h2 class="text-3xl font-black mb-6 brush-font">江湖戰報</h2>
+                    <div class="space-y-4" id="stats-container"></div>
+                </div>
+            </div>
+
+            <!-- 天機算 (AI 聊天 + OCR) -->
             <div id="page-ai" class="page" style="padding: 0; background: #fff;">
                 <div class="flex flex-col h-full">
                     <div class="bg-black p-4 flex items-center gap-4 border-b-4 border-red-600">
                         <div class="w-10 h-10 bg-red-600 border-2 border-white flex items-center justify-center text-white text-xl">
-                            <i class="fas fa-yin-yang"></i>
+                            <i class="fas fa-eye"></i>
                         </div>
                         <div class="overflow-hidden">
-                            <h3 class="text-white brush-font text-lg truncate">天機算大師</h3>
-                            <p class="text-[9px] text-gold font-black uppercase tracking-widest">AI Fortune Teller</p>
+                            <h3 class="text-white brush-font text-lg">天機算大師</h3>
+                            <p class="text-[9px] text-gold font-black uppercase tracking-widest">AI Vision OCR</p>
                         </div>
                     </div>
+                    
                     <div id="chat-messages" class="flex-1 p-4 space-y-6 overflow-y-auto"></div>
+                    
                     <div class="p-3 bg-white border-t-4 border-black">
-                        <form id="chat-form" class="flex gap-2">
-                            <input type="text" id="chat-input" placeholder="例：中午吃了碗拉麵 100 元" class="flex-1 border-4 border-black px-3 py-3 font-black text-xs outline-none focus:bg-yellow-50">
-                            <button type="submit" id="send-btn" class="w-12 bg-black text-white border-b-4 border-r-4 border-red-600 active:border-0 flex items-center justify-center">
+                        <!-- 圖片預覽區 -->
+                        <div id="img-preview-container">
+                            <div class="clear-img" onclick="clearImage()"><i class="fas fa-times"></i></div>
+                            <img id="img-preview" src="" alt="收據預覽">
+                            <p class="text-[9px] font-black text-red-600 mt-1 uppercase italic">大師已開法眼分析此貼...</p>
+                        </div>
+
+                        <form id="chat-form" class="flex gap-2 items-end">
+                            <!-- 隱藏的 File Input -->
+                            <input type="file" id="camera-input" accept="image/*" class="hidden" onchange="previewImage(this)">
+                            <button type="button" onclick="document.getElementById('camera-input').click()" class="w-12 h-12 bg-yellow-400 border-4 border-black flex items-center justify-center text-xl shadow-[2px_2px_0px_#000] active:shadow-none active:translate-x-1 active:translate-y-1">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            
+                            <input type="text" id="chat-input" placeholder="直接講話或拍收據..." class="flex-1 border-4 border-black px-3 py-3 font-black text-xs outline-none focus:bg-yellow-50">
+                            
+                            <button type="submit" id="send-btn" class="w-12 h-12 bg-black text-white border-b-4 border-r-4 border-red-600 active:border-0 flex items-center justify-center">
                                 <i class="fas fa-fist-raised text-lg" id="btn-icon"></i>
                             </button>
                         </form>
@@ -261,270 +211,260 @@
                 </div>
             </div>
 
+            <!-- 設定 -->
             <div id="page-settings" class="page">
                 <div class="py-4">
                     <h2 class="text-3xl font-black mb-6 brush-font">門派設定</h2>
                     <div class="manhua-card bg-slate-50">
-                        <h5 class="text-xs font-black uppercase mb-2 text-red-600 italic">初始功力 (Starting Balance)</h5>
-                        <div class="flex flex-col gap-2">
-                            <input type="number" id="base-balance-input" placeholder="輸入起始金額" class="w-full border-2 border-black p-2 text-xs font-bold outline-none">
-                            <button id="save-base-btn" class="w-full bg-black text-white px-4 py-2 text-xs font-black border-b-4 border-r-4 border-gold">注入本錢</button>
-                        </div>
+                        <h5 class="text-xs font-black uppercase mb-2 text-red-600 italic">英雄稱號</h5>
+                        <input type="text" id="username-input" class="w-full border-2 border-black p-2 text-xs font-bold mb-2">
+                        <button id="save-username-btn" class="w-full bg-black text-white py-2 text-xs font-black border-b-4 border-r-4 border-red-600">修煉名號</button>
+                    </div>
+                    <div class="manhua-card bg-slate-50 mt-4">
+                        <h5 class="text-xs font-black uppercase mb-2 text-red-600 italic">初始功力</h5>
+                        <input type="number" id="base-balance-input" class="w-full border-2 border-black p-2 text-xs font-bold mb-2">
+                        <button id="save-base-btn" class="w-full bg-black text-white py-2 text-xs font-black border-b-4 border-r-4 border-gold">注入本錢</button>
                     </div>
                     <div class="manhua-card bg-slate-50 mt-4">
                         <h5 class="text-xs font-black uppercase mb-2 text-red-600 italic">內功心法 (Gemini API Key)</h5>
-                        <div class="flex flex-col gap-2">
-                            <input type="password" id="api-key-input" placeholder="貼上你的 API Key" class="w-full border-2 border-black p-2 text-xs font-bold outline-none">
-                            <button id="save-key-btn" class="w-full bg-black text-white px-4 py-2 text-xs font-black border-b-4 border-r-4 border-red-600">修煉</button>
-                        </div>
-                    </div>
-                    <div class="manhua-card bg-slate-50 mt-4">
-                        <h5 class="text-xs font-black uppercase mb-2 text-blue-600 italic">門派編號 (App ID)</h5>
-                        <div class="flex flex-col gap-2">
-                            <input type="text" id="app-id-input" class="w-full border-2 border-black p-2 text-xs font-bold outline-none">
-                            <button id="save-appid-btn" class="w-full bg-black text-white px-4 py-2 text-xs font-black border-b-4 border-r-4 border-blue-600">重設連線</button>
-                        </div>
+                        <input type="password" id="api-key-input" class="w-full border-2 border-black p-2 text-xs font-bold mb-2">
+                        <button id="save-key-btn" class="w-full bg-black text-white py-2 text-xs font-black border-b-4 border-r-4 border-red-600">修煉心法</button>
                     </div>
                     <div class="manhua-card mt-6 bg-red-50 border-dashed border-2 text-center">
-                        <button id="reset-system-btn" class="text-[10px] font-black text-red-600 uppercase py-2">重置所有設定 (Factory Reset)</button>
+                        <button id="reset-system-btn" class="text-[10px] font-black text-red-600 uppercase py-2">重置所有設定</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="nav-bar">
-            <div class="nav-item active" data-page="home">
-                <i class="fas fa-fort-awesome"></i>
-                <span class="text-[10px]">主城</span>
-            </div>
-            <div class="nav-item invisible pointer-events-none">
-                <i class="fas fa-plus"></i>
-            </div>
-            <div class="ai-btn" id="ai-trigger">
-                <i class="fas fa-hand-fist text-2xl"></i>
-            </div>
-            <div class="nav-item" data-page="settings">
-                <i class="fas fa-map-marked-alt"></i>
-                <span class="text-[10px]">江湖</span>
-            </div>
+            <div class="nav-item active" data-page="home"><i class="fas fa-fort-awesome"></i><span class="text-[9px]">主城</span></div>
+            <div class="nav-item" data-page="stats"><i class="fas fa-scroll"></i><span class="text-[9px]">戰報</span></div>
+            <div class="ai-btn" id="ai-trigger"><i class="fas fa-eye text-2xl"></i></div>
+            <div class="nav-item" data-page="settings"><i class="fas fa-map-marked-alt"></i><span class="text-[9px]">江湖</span></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const STORAGE_KEY_FB = 'FB_CONFIG_JSON_V3';
         const STORAGE_KEY_GEMINI = 'GEMINI_API_KEY_V3';
         const STORAGE_KEY_APPID = 'APP_ID_V3';
         const STORAGE_KEY_BASE = 'BASE_BALANCE_V3';
+        const STORAGE_KEY_NAME = 'USER_NAME_V3';
+        const STORAGE_KEY_LABEL = 'POWER_LABEL_V3';
         const DEFAULT_APP_ID = 'fin-track-manhua';
 
-        const initOverlay = document.getElementById('init-overlay');
-        const fbInput = document.getElementById('fb-config-input');
-        const saveFbBtn = document.getElementById('save-fb-btn');
-        const toast = document.getElementById('toast');
+        const ICONS = { '餐飲': 'drumstick-bite', '交通': 'horse', '娛樂': 'theater-masks', '收入': 'dragon', '購物': 'gem', '其他': 'bolt' };
+        const CATEGORIES = ['餐飲', '交通', '娛樂', '收入', '購物', '其他'];
 
         let db, auth;
         let currentAppId = localStorage.getItem(STORAGE_KEY_APPID) || DEFAULT_APP_ID;
         let baseBalance = parseFloat(localStorage.getItem(STORAGE_KEY_BASE)) || 0;
+        let userName = localStorage.getItem(STORAGE_KEY_NAME) || '強者之路';
+        let powerLabel = localStorage.getItem(STORAGE_KEY_LABEL) || '戰鬥力 (功力)';
+        let currentBase64 = null;
 
-        function showToast(msg) {
-            toast.innerText = msg; toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
-        }
+        const toast = document.getElementById('toast');
+        const showToast = (msg) => { toast.innerText = msg; toast.style.display = 'block'; setTimeout(() => toast.style.display = 'none', 3000); };
 
         const startApp = (config) => {
-            initOverlay.classList.add('hidden');
             try {
                 const firebaseApp = initializeApp(config);
                 auth = getAuth(firebaseApp);
                 db = getFirestore(firebaseApp);
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        document.getElementById('user-id-suffix').innerText = user.uid.slice(-4).toUpperCase();
-                        startDataSync(user.uid);
-                    } else {
-                        signInAnonymously(auth).catch(e => showToast("雲端功力連線失敗！"));
-                    }
-                });
-            } catch (err) {
-                localStorage.removeItem(STORAGE_KEY_FB);
-                location.reload();
-            }
+                onAuthStateChanged(auth, (user) => { if (user) startDataSync(user.uid); else signInAnonymously(auth); });
+                document.getElementById('init-overlay').classList.add('hidden');
+            } catch (err) { localStorage.removeItem(STORAGE_KEY_FB); location.reload(); }
         };
 
         const savedConfig = localStorage.getItem(STORAGE_KEY_FB);
-        if (savedConfig) {
-            startApp(JSON.parse(savedConfig));
-        } else {
-            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-                startApp(JSON.parse(__firebase_config));
-            } else {
-                initOverlay.classList.remove('hidden');
-            }
-        }
+        if (savedConfig) startApp(JSON.parse(savedConfig));
+        else if (typeof __firebase_config !== 'undefined') startApp(JSON.parse(__firebase_config));
+        else document.getElementById('init-overlay').classList.remove('hidden');
 
-        saveFbBtn.onclick = () => {
-            let raw = fbInput.value.trim();
-            try {
-                const braceMatch = raw.match(/\{[\s\S]*\}/);
-                if (braceMatch) raw = braceMatch[0];
-                let cleaned = raw
-                    .replace(/\/\/.*/g, '').replace(/\/\*[\s\S]*?\*\//g, '')
-                    .replace(/([{,])\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
-                    .replace(/:\s*['"]([^'"]*)['"]/g, ': "$1"')
-                    .replace(/,\s*}/g, '}').replace(/;/g, '');
-                const config = JSON.parse(cleaned);
-                if (config.apiKey) {
-                    localStorage.setItem(STORAGE_KEY_FB, JSON.stringify(config));
-                    location.reload();
-                }
-            } catch (e) { showToast("心法格式有誤！"); }
-        };
-
-        // 初始餘額設定
-        document.getElementById('base-balance-input').value = baseBalance;
-        document.getElementById('save-base-btn').onclick = () => {
-            const val = parseFloat(document.getElementById('base-balance-input').value) || 0;
-            localStorage.setItem(STORAGE_KEY_BASE, val);
-            baseBalance = val;
-            triggerFX("注力完成！");
-            location.reload();
-        };
-
-        document.getElementById('app-id-input').value = currentAppId;
-        document.getElementById('save-appid-btn').onclick = () => {
-            const newId = document.getElementById('app-id-input').value.trim();
-            if (newId) {
-                localStorage.setItem(STORAGE_KEY_APPID, newId);
-                triggerFX("重連江湖！");
-                setTimeout(() => location.reload(), 1000);
-            }
-        };
-
-        document.getElementById('reset-system-btn').onclick = () => {
-            if(confirm("確定要廢除所有功力（重置設定）？")) {
-                localStorage.clear();
-                location.reload();
-            }
-        };
-
-        function triggerFX(text) {
-            const fx = document.getElementById('fx-text');
-            fx.innerText = text; fx.style.display = 'block';
-            fx.style.left = '40%'; fx.style.top = '40%';
-            setTimeout(() => fx.style.display = 'none', 800);
-        }
-
+        // --- 核心同步 ---
         function startDataSync(userId) {
             const transRef = collection(db, 'artifacts', currentAppId, 'users', userId, 'transactions');
-            onSnapshot(transRef, (snapshot) => {
-                const data = [];
-                snapshot.forEach(doc => data.push({ id: doc.id, ...doc.data() }));
+            onSnapshot(transRef, (snap) => {
+                const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
                 data.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-                updateUI(data);
-            }, (err) => {
-                if (err.code === 'permission-denied') showToast("內功不足！請檢查規則。");
+                updateUI(data, userId);
+                updateStats(data);
             });
         }
 
-        function updateUI(transactions) {
-            const list = document.getElementById('transaction-list');
-            let inc = 0, exp = 0;
-            if (transactions.length === 0) {
-                list.innerHTML = `<div class="text-center py-10 opacity-30"><p class="brush-font text-lg">英雄尚未留下足跡</p></div>`;
-            } else {
-                list.innerHTML = transactions.map(t => {
-                    const amt = parseFloat(t.amount);
-                    if (amt > 0) inc += amt; else exp += Math.abs(amt);
-                    const icons = { '餐飲': 'drumstick-bite', '交通': 'horse', '娛樂': 'theater-masks', '收入': 'dragon', '購物': 'gem' };
-                    return `<div class="manhua-card flex items-center gap-4 py-3 animate-fadeIn">
-                        <div class="flex-shrink-0 w-10 h-10 bg-black text-white flex items-center justify-center border-2 border-red-600 shadow-[2px_2px_0px_#cc0000]"><i class="fas fa-${icons[t.category] || 'bolt'}"></i></div>
-                        <div class="flex-1 overflow-hidden"><p class="font-black text-sm uppercase truncate">${t.title}</p><p class="text-[8px] font-bold text-slate-400 uppercase truncate">${t.category}</p></div>
-                        <span class="font-black brush-font text-sm whitespace-nowrap ${amt > 0 ? 'text-green-600' : 'text-red-600'}">${amt > 0 ? '+' : ''}${amt.toLocaleString()}</span>
-                    </div>`;
-                }).join('');
-            }
-            // 使用動態起始金額
-            document.getElementById('total-balance').innerText = `$${(baseBalance + inc - exp).toLocaleString()}`;
-            document.getElementById('monthly-income').innerText = `+$${inc.toLocaleString()}`;
-            document.getElementById('monthly-expense').innerText = `-$${exp.toLocaleString()}`;
-        }
-
-        const getGeminiKey = () => localStorage.getItem(STORAGE_KEY_GEMINI) || "";
-        document.getElementById('api-key-input').value = getGeminiKey();
-        document.getElementById('save-key-btn').onclick = () => {
-            localStorage.setItem(STORAGE_KEY_GEMINI, document.getElementById('api-key-input').value.trim());
-            triggerFX("成！");
+        // --- 圖片預覽與清理 ---
+        window.previewImage = (input) => {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentBase64 = e.target.result.split(',')[1];
+                document.getElementById('img-preview').src = e.target.result;
+                document.getElementById('img-preview-container').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
         };
 
-        async function callGemini(prompt) {
-            const key = getGeminiKey();
+        window.clearImage = () => {
+            currentBase64 = null;
+            document.getElementById('camera-input').value = '';
+            document.getElementById('img-preview-container').style.display = 'none';
+        };
+
+        // --- AI OCR 核心 ---
+        async function callGemini(prompt, base64) {
+            const key = localStorage.getItem(STORAGE_KEY_GEMINI);
             if (!key) throw new Error("MISSING_KEY");
-            const systemPrompt = `你是一位港漫風格的大師，將輸入轉為 JSON：{ "title": "品項", "amount": 數字, "category": "分類", "comment": "霸氣吐槽" }。分類：餐飲、交通、娛樂、收入、購物、其他。回傳純 JSON。`;
-            const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { responseMimeType: "application/json" } };
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`;
-            const response = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
-            const result = await response.json();
-            return JSON.parse(result.candidates[0].content.parts[0].text);
+
+            const sys = `你是一位港漫風格大師。如果是文字輸入，請按類別歸類。如果是收據圖片，請識別收據上的：商戶名稱(title)、總金額(amount)、消費分類(category)，並回傳一段霸氣吐槽(comment)。
+            分類限：餐飲、交通、娛樂、收入、購物、其他。
+            如果是支出，amount 必須是負數；如果是收入，amount 是正數。回傳純 JSON 格式：{"title": string, "amount": number, "category": string, "comment": string}`;
+
+            const contents = [{
+                role: "user",
+                parts: [{ text: prompt || "請分析這張收據。" }]
+            }];
+
+            if (base64) {
+                contents[0].parts.push({
+                    inlineData: { mimeType: "image/png", data: base64 }
+                });
+            }
+
+            const payload = { 
+                contents, 
+                systemInstruction: { parts: [{ text: sys }] },
+                generationConfig: { responseMimeType: "application/json" }
+            };
+
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, { 
+                method: 'POST', 
+                body: JSON.stringify(payload) 
+            });
+            const json = await res.json();
+            return JSON.parse(json.candidates[0].content.parts[0].text);
         }
 
-        const chatForm = document.getElementById('chat-form');
-        chatForm.onsubmit = async (e) => {
+        document.getElementById('chat-form').onsubmit = async (e) => {
             e.preventDefault();
             const input = document.getElementById('chat-input');
             const val = input.value.trim();
-            if (!val || !auth?.currentUser) return;
+            if (!val && !currentBase64) return;
+
             const msgBox = document.getElementById('chat-messages');
-            const uMsg = document.createElement('div'); uMsg.className = "flex justify-end animate-fadeIn";
-            uMsg.innerHTML = `<div class="manhua-card bg-black text-white border-white shadow-none text-xs font-black">${val}</div>`;
-            msgBox.appendChild(uMsg);
+            const displayVal = currentBase64 ? "【法眼識別中...】 " + val : val;
+            msgBox.innerHTML += `<div class="flex justify-end"><div class="manhua-card bg-black text-white border-white text-xs font-black">${displayVal}</div></div>`;
+            
+            const tempBase64 = currentBase64;
             input.value = '';
+            clearImage();
             document.getElementById('btn-icon').className = "fas fa-sync-alt spinner";
+
             try {
-                const parsed = await callGemini(val);
-                await addDoc(collection(db, 'artifacts', currentAppId, 'users', auth.currentUser.uid, 'transactions'), { ...parsed, timestamp: serverTimestamp() });
-                triggerFX(parsed.amount < 0 ? '散！' : '吸！');
-                const aiMsg = document.createElement('div'); aiMsg.className = "flex justify-start animate-fadeIn";
-                aiMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black">【大師】：${parsed.comment}</div>`;
-                msgBox.appendChild(aiMsg);
-            } catch (err) {
-                const eMsg = document.createElement('div'); eMsg.className = "flex justify-start animate-fadeIn";
-                const txt = err.message === "MISSING_KEY" ? "尚未修煉心法 (API Key)！" : "解析失敗！";
-                eMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black border-red-600 text-red-600">${txt}</div>`;
-                msgBox.appendChild(eMsg);
+                const p = await callGemini(val, tempBase64);
+                await addDoc(collection(db, 'artifacts', currentAppId, 'users', auth.currentUser.uid, 'transactions'), { ...p, timestamp: serverTimestamp() });
+                triggerFX(p.amount < 0 ? '散！' : '吸！');
+                msgBox.innerHTML += `<div class="flex justify-start animate-fadeIn"><div class="manhua-card !mb-0 text-xs font-black border-red-600 border-l-[10px]">【大師】：識別到「${p.title}」花費 $${Math.abs(p.amount)}。<br><span class="italic text-[10px] opacity-70">${p.comment}</span></div></div>`;
+            } catch (e) {
+                msgBox.innerHTML += `<div class="text-red-600 text-[10px] text-center font-bold">大師走火入魔！請檢查內功 (API Key)</div>`;
             } finally {
                 document.getElementById('btn-icon').className = "fas fa-fist-raised";
                 msgBox.scrollTo(0, msgBox.scrollHeight);
             }
         };
 
-        const navItems = document.querySelectorAll('.nav-item');
-        const pages = document.querySelectorAll('.page');
-        const aiBtn = document.getElementById('ai-trigger');
+        // --- UI & Stats ---
+        function updateUI(transactions, userId) {
+            const list = document.getElementById('transaction-list');
+            let inc = 0, exp = 0;
+            list.innerHTML = transactions.length ? '' : '<div class="text-center py-10 opacity-30 brush-font text-lg">英雄尚未留下足跡</div>';
+            transactions.forEach(t => {
+                const amt = parseFloat(t.amount);
+                if (amt > 0) inc += amt; else exp += Math.abs(amt);
+                const card = document.createElement('div');
+                card.className = "manhua-card transaction-card flex items-center gap-4 py-3 animate-fadeIn";
+                card.innerHTML = `
+                    <div class="flex-shrink-0 w-10 h-10 bg-black text-white flex items-center justify-center border-2 border-red-600 shadow-[2px_2px_0px_#cc0000]">
+                        <i class="fas fa-${ICONS[t.category] || 'bolt'}"></i>
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="font-black text-sm uppercase truncate">${t.title}</p>
+                        <p class="text-[8px] font-bold text-red-600 uppercase">#${t.category}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="font-black brush-font text-sm ${amt > 0 ? 'text-green-600' : 'text-red-600'}">
+                            ${amt > 0 ? '+' : ''}${amt.toLocaleString()}
+                        </span>
+                        <div class="delete-btn cursor-pointer" onclick="event.stopPropagation(); window.delT('${t.id}','${userId}')"><i class="fas fa-burst"></i></div>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+            document.getElementById('total-balance').innerText = `$${(baseBalance + inc - exp).toLocaleString()}`;
+            document.getElementById('monthly-income').innerText = `+$${inc.toLocaleString()}`;
+            document.getElementById('monthly-expense').innerText = `-$${exp.toLocaleString()}`;
+            document.getElementById('user-display').innerText = userName;
+            document.getElementById('power-label-display').innerText = powerLabel;
+        }
 
-        navItems.forEach(i => i.onclick = () => {
-            const pageId = i.dataset.page;
-            if(!pageId) return;
-            pages.forEach(p => p.classList.remove('active'));
-            navItems.forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            i.classList.add('active');
-        });
-
-        aiBtn.onclick = () => {
-            pages.forEach(p => p.classList.remove('active'));
-            navItems.forEach(n => n.classList.remove('active'));
-            document.getElementById('page-ai').classList.add('active');
+        window.delT = async (id, userId) => {
+            if (confirm("廢除此紀錄？")) {
+                await deleteDoc(doc(db, 'artifacts', currentAppId, 'users', userId, 'transactions', id));
+                triggerFX("碎！");
+            }
         };
 
-        setInterval(() => {
-            const h = new Date().getHours();
-            const shifts = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
-            document.getElementById('clock').innerText = shifts[Math.floor(h/2)] + "時";
-        }, 1000);
+        function updateStats(transactions) {
+            const periods = {
+                day: t => new Date(t*1000).toDateString() === new Date().toDateString(),
+                week: t => (Date.now() - t*1000) < 7*24*60*60*1000,
+                month: t => new Date(t*1000).getMonth() === new Date().getMonth() && new Date(t*1000).getFullYear() === new Date().getFullYear(),
+                year: t => new Date(t*1000).getFullYear() === new Date().getFullYear()
+            };
+            const labels = { day: '今日決鬥', week: '本週戰果', month: '本月功力', year: '年度總結' };
+            const container = document.getElementById('stats-container');
+            container.innerHTML = '';
+            
+            Object.keys(periods).forEach(p => {
+                let pIn = 0, pOut = 0;
+                transactions.filter(t => t.timestamp && periods[p](t.timestamp.seconds)).forEach(t => {
+                    const a = parseFloat(t.amount); if (a > 0) pIn += a; else pOut += Math.abs(a);
+                });
+                const total = pIn - pOut;
+                const ratio = (pIn + pOut === 0) ? 0 : (pOut / (pIn + pOut)) * 100;
+                container.innerHTML += `
+                    <div class="manhua-card border-l-[12px] ${p==='day'?'border-red-600':p==='week'?'border-black':p==='month'?'border-gold':'border-slate-400'}">
+                        <h5 class="text-xs font-black uppercase mb-1">${labels[p]}</h5>
+                        <div class="flex justify-between items-end">
+                            <div class="text-2xl font-black brush-font ${total>=0?'text-green-600':'text-red-600'}">${total>=0?'':'-'}$${Math.abs(total).toLocaleString()}</div>
+                            <div class="text-[9px] font-bold text-slate-400">入:${pIn.toLocaleString()} | 出:${pOut.toLocaleString()}</div>
+                        </div>
+                        <div class="stat-bar-container"><div class="stat-bar-fill bg-red-600" style="width: ${ratio}%"></div></div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- UI Utils ---
+        function triggerFX(t) { const f = document.getElementById('fx-text'); f.innerText = t; f.style.display = 'block'; f.style.left = '40%'; f.style.top = '40%'; setTimeout(() => f.style.display = 'none', 800); }
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('page-' + id).classList.add('active');
+            const nav = document.querySelector(`.nav-item[data-page="${id}"]`); if (nav) nav.classList.add('active');
+        }
+        document.querySelectorAll('.nav-item').forEach(n => n.onclick = () => showPage(n.dataset.page));
+        document.getElementById('ai-trigger').onclick = () => showPage('ai');
+        document.getElementById('save-username-btn').onclick = () => { localStorage.setItem(STORAGE_KEY_NAME, document.getElementById('username-input').value); location.reload(); };
+        document.getElementById('save-base-btn').onclick = () => { localStorage.setItem(STORAGE_KEY_BASE, document.getElementById('base-balance-input').value); location.reload(); };
+        document.getElementById('save-key-btn').onclick = () => { localStorage.setItem(STORAGE_KEY_GEMINI, document.getElementById('api-key-input').value); showToast("修煉完成！"); };
+        document.getElementById('reset-system-btn').onclick = () => { if(confirm("重置所有？")) { localStorage.clear(); location.reload(); } };
+        setInterval(() => { const h = new Date().getHours(); document.getElementById('clock').innerText = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"][Math.floor(h/2)] + "時"; }, 1000);
     </script>
 </body>
 </html>
