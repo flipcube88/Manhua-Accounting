@@ -30,7 +30,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 使用 dvh 確保在手機瀏覽器上高度精確 */
             min-height: 100dvh; 
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
@@ -41,7 +40,7 @@
 
         .phone-container {
             width: 100%;
-            max-width: 500px; /* 平板或桌面時稍微放寬一點點 */
+            max-width: 500px;
             height: 100dvh;
             background: #fff;
             border: 6px solid var(--ink-black);
@@ -52,10 +51,9 @@
             flex-direction: column;
         }
 
-        /* 針對較寬屏幕的優化 */
         @media (min-width: 640px) {
             .phone-container {
-                max-width: 375px; /* 模擬真實手機尺寸 */
+                max-width: 375px;
                 height: 812px;
                 border-radius: 32px;
                 margin: 20px;
@@ -86,7 +84,6 @@
             overflow-y: auto;
             display: none;
             padding: 20px;
-            /* 底部預留空間，考慮安全區域 */
             padding-bottom: calc(100px + env(safe-area-inset-bottom)); 
             z-index: 10;
         }
@@ -156,9 +153,7 @@
             padding: 15px;
             margin-bottom: 20px;
             box-shadow: 6px 6px 0px var(--ink-black);
-            transition: transform 0.2s;
         }
-        .manhua-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--ink-black); }
 
         .kungfu-banner {
             background: var(--ink-black);
@@ -186,28 +181,18 @@
         #init-overlay { position: fixed; inset: 0; background: #1a1a1a; z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .hidden { display: none !important; }
         #toast { position: fixed; top: calc(60px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 10px 20px; border: 2px solid var(--blood-red); font-weight: 900; z-index: 1000; display: none; text-align: center; width: 80%; }
-        
-        /* 針對橫向模式的優化 */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .phone-container { max-height: 100dvh; max-width: 100dvw; border: none; }
-            .status-bar { display: none; }
-            .nav-bar { height: 60px; padding-bottom: 0; }
-            .ai-btn { margin-top: -40px; width: 50px; height: 50px; }
-        }
     </style>
 </head>
 <body>
 
     <div id="toast" class="brush-font text-sm">系統提示</div>
 
-    <!-- 初始化系統 (Firebase Config) -->
     <div id="init-overlay" class="hidden">
         <div class="manhua-card w-full max-w-sm">
             <h2 class="brush-font text-3xl mb-4 text-center">開山立派</h2>
             <p class="text-xs font-bold text-slate-500 mb-6 text-center italic">「英雄，請輸入你的雲端心法 (Firebase Config)」</p>
             <textarea id="fb-config-input" rows="8" placeholder='貼上 Firebase Console 提供的程式碼...' class="w-full border-4 border-black p-3 text-[10px] font-mono mb-4 outline-none focus:bg-yellow-50" spellcheck="false"></textarea>
             <button id="save-fb-btn" class="w-full bg-red-600 text-white font-black py-3 border-b-4 border-r-4 border-black active:border-0 uppercase tracking-widest">注入神功</button>
-            <p class="text-[9px] text-slate-400 mt-4 leading-tight text-center">注意：若要找回舊數據，請在進入後於「江湖」頁面修改 App ID。</p>
         </div>
     </div>
 
@@ -215,14 +200,12 @@
         <div class="comic-bg"></div>
         <div id="fx-text" class="on-omatopoeia brush-font">轟！</div>
 
-        <!-- 固定狀態列 (動態適配 Safe Area) -->
         <div class="status-bar">
             <span id="clock" class="comic-font">辰時</span>
             <div class="flex gap-2"><i class="fas fa-dragon"></i><i class="fas fa-bolt"></i></div>
         </div>
 
         <div class="page-wrapper">
-            <!-- 主城 -->
             <div id="page-home" class="page active">
                 <div class="py-4">
                     <div class="flex justify-between items-center mb-6">
@@ -251,13 +234,10 @@
                     </div>
 
                     <h4 class="text-xl font-black mb-4 brush-font border-b-4 border-black inline-block">錢財決鬥史</h4>
-                    <div class="space-y-4" id="transaction-list">
-                        <!-- 資料注入處 -->
-                    </div>
+                    <div class="space-y-4" id="transaction-list"></div>
                 </div>
             </div>
 
-            <!-- 天機算 (AI) -->
             <div id="page-ai" class="page" style="padding: 0; background: #fff;">
                 <div class="flex flex-col h-full">
                     <div class="bg-black p-4 flex items-center gap-4 border-b-4 border-red-600">
@@ -269,9 +249,7 @@
                             <p class="text-[9px] text-gold font-black uppercase tracking-widest">AI Fortune Teller</p>
                         </div>
                     </div>
-                    <div id="chat-messages" class="flex-1 p-4 space-y-6 overflow-y-auto">
-                        <!-- 訊息注入處 -->
-                    </div>
+                    <div id="chat-messages" class="flex-1 p-4 space-y-6 overflow-y-auto"></div>
                     <div class="p-3 bg-white border-t-4 border-black">
                         <form id="chat-form" class="flex gap-2">
                             <input type="text" id="chat-input" placeholder="例：中午吃了碗拉麵 100 元" class="flex-1 border-4 border-black px-3 py-3 font-black text-xs outline-none focus:bg-yellow-50">
@@ -283,11 +261,17 @@
                 </div>
             </div>
 
-            <!-- 江湖 (設定) -->
             <div id="page-settings" class="page">
                 <div class="py-4">
                     <h2 class="text-3xl font-black mb-6 brush-font">門派設定</h2>
                     <div class="manhua-card bg-slate-50">
+                        <h5 class="text-xs font-black uppercase mb-2 text-red-600 italic">初始功力 (Starting Balance)</h5>
+                        <div class="flex flex-col gap-2">
+                            <input type="number" id="base-balance-input" placeholder="輸入起始金額" class="w-full border-2 border-black p-2 text-xs font-bold outline-none">
+                            <button id="save-base-btn" class="w-full bg-black text-white px-4 py-2 text-xs font-black border-b-4 border-r-4 border-gold">注入本錢</button>
+                        </div>
+                    </div>
+                    <div class="manhua-card bg-slate-50 mt-4">
                         <h5 class="text-xs font-black uppercase mb-2 text-red-600 italic">內功心法 (Gemini API Key)</h5>
                         <div class="flex flex-col gap-2">
                             <input type="password" id="api-key-input" placeholder="貼上你的 API Key" class="w-full border-2 border-black p-2 text-xs font-bold outline-none">
@@ -308,13 +292,12 @@
             </div>
         </div>
 
-        <!-- 固定導航列 -->
         <div class="nav-bar">
             <div class="nav-item active" data-page="home">
                 <i class="fas fa-fort-awesome"></i>
                 <span class="text-[10px]">主城</span>
             </div>
-            <div class="nav-item invisible pointer-events-none"> <!-- 佔位空間 -->
+            <div class="nav-item invisible pointer-events-none">
                 <i class="fas fa-plus"></i>
             </div>
             <div class="ai-btn" id="ai-trigger">
@@ -335,6 +318,7 @@
         const STORAGE_KEY_FB = 'FB_CONFIG_JSON_V3';
         const STORAGE_KEY_GEMINI = 'GEMINI_API_KEY_V3';
         const STORAGE_KEY_APPID = 'APP_ID_V3';
+        const STORAGE_KEY_BASE = 'BASE_BALANCE_V3';
         const DEFAULT_APP_ID = 'fin-track-manhua';
 
         const initOverlay = document.getElementById('init-overlay');
@@ -344,6 +328,7 @@
 
         let db, auth;
         let currentAppId = localStorage.getItem(STORAGE_KEY_APPID) || DEFAULT_APP_ID;
+        let baseBalance = parseFloat(localStorage.getItem(STORAGE_KEY_BASE)) || 0;
 
         function showToast(msg) {
             toast.innerText = msg; toast.style.display = 'block';
@@ -356,7 +341,6 @@
                 const firebaseApp = initializeApp(config);
                 auth = getAuth(firebaseApp);
                 db = getFirestore(firebaseApp);
-
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         document.getElementById('user-id-suffix').innerText = user.uid.slice(-4).toUpperCase();
@@ -397,7 +381,17 @@
                     localStorage.setItem(STORAGE_KEY_FB, JSON.stringify(config));
                     location.reload();
                 }
-            } catch (e) { showToast("心法殘缺或格式有誤！"); }
+            } catch (e) { showToast("心法格式有誤！"); }
+        };
+
+        // 初始餘額設定
+        document.getElementById('base-balance-input').value = baseBalance;
+        document.getElementById('save-base-btn').onclick = () => {
+            const val = parseFloat(document.getElementById('base-balance-input').value) || 0;
+            localStorage.setItem(STORAGE_KEY_BASE, val);
+            baseBalance = val;
+            triggerFX("注力完成！");
+            location.reload();
         };
 
         document.getElementById('app-id-input').value = currentAppId;
@@ -432,7 +426,7 @@
                 data.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
                 updateUI(data);
             }, (err) => {
-                if (err.code === 'permission-denied') showToast("內功不足！請檢查資料庫規則。");
+                if (err.code === 'permission-denied') showToast("內功不足！請檢查規則。");
             });
         }
 
@@ -453,7 +447,8 @@
                     </div>`;
                 }).join('');
             }
-            document.getElementById('total-balance').innerText = `$${(10000 + inc - exp).toLocaleString()}`;
+            // 使用動態起始金額
+            document.getElementById('total-balance').innerText = `$${(baseBalance + inc - exp).toLocaleString()}`;
             document.getElementById('monthly-income').innerText = `+$${inc.toLocaleString()}`;
             document.getElementById('monthly-expense').innerText = `-$${exp.toLocaleString()}`;
         }
@@ -497,7 +492,7 @@
                 msgBox.appendChild(aiMsg);
             } catch (err) {
                 const eMsg = document.createElement('div'); eMsg.className = "flex justify-start animate-fadeIn";
-                const txt = err.message === "MISSING_KEY" ? "尚未修煉心法 (API Key)！" : "解析失敗，內力不足！";
+                const txt = err.message === "MISSING_KEY" ? "尚未修煉心法 (API Key)！" : "解析失敗！";
                 eMsg.innerHTML = `<div class="manhua-card !mb-0 text-xs font-black border-red-600 text-red-600">${txt}</div>`;
                 msgBox.appendChild(eMsg);
             } finally {
